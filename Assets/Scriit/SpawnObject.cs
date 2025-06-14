@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class SpawnObject : MonoBehaviour
@@ -14,16 +15,18 @@ public class SpawnObject : MonoBehaviour
             go.transform.rotation = Quaternion.identity;
             currentX++;
 
-            //StartCoroutine(ReturnObject(go));
+            StartCoroutine(ReturnObject(go));
         }
-        else { 
-             
+        else {
+            Debug.LogWarning($"No object found with ID: {pooledObjectId}");
         }
         
     }
-    private void ReturnObject()
+    private IEnumerator ReturnObject(GameObject go)
     {
-       
+        yield return new WaitForSeconds(1f);
+       ObjectPool.ReturnObject(pooledObjectId, go);
+        currentX = 0;
     }
     private void OnGUI()
     {
