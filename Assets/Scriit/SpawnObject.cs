@@ -6,8 +6,13 @@ public class SpawnObject : MonoBehaviour
     [SerializeField] private ObjectPool ObjectPool;
     [SerializeField] private string pooledObjectId;
     private float currentX = 0;
+    void Start()
+    {
+        ObjectPool = ObjectPool.Instance;
+    }
     public void spawn(string pooledObjectId)
     {
+        this.pooledObjectId = pooledObjectId;
         var go = ObjectPool.GetObject(pooledObjectId);
         if (go != null)
         {
