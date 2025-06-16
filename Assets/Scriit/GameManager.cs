@@ -3,7 +3,7 @@ using Utils;
 
 namespace managers
 {
-    public class GameManager : MonoSing<GameManager>
+    public class GameManager : MonoSingleton<GameManager>
     {
         [SerializeField] public int SpawnObjectCountInASecond = 1;
         [SerializeField] private string pooledObjectId = "Cube";
@@ -17,8 +17,13 @@ namespace managers
                 spawnTimer -= 1f;
                 for (var i = 0; i < SpawnObjectCountInASecond; i++)
                 {
-                    SpawnObject.Instance.Spawn(pooledObjectId);
+                    GetInstance().Spawn(pooledObjectId);
                 }
+            }
+
+            static object GetInstance()
+            {
+                return SpawnObject.Instance;
             }
         }
     }

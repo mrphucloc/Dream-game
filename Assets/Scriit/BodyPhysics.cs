@@ -22,7 +22,7 @@ public class BodyPhysics : MonoBehaviour
             ApplyGravity();
         }
 
-            Apply Force();
+            ApplyForce();
         transform.position += velocity * Time.deltaTime; 
     }
     private void ApplyForce()

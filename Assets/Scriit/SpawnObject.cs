@@ -3,17 +3,17 @@ using UnityEngine;
 
 public class SpawnObject : MonoBehaviour
 {
-    [SerializeField] private ObjectPool ObjectPool;
+    [SerializeField] private ObjectPool objectPool;
     [SerializeField] private string pooledObjectId;
     private float currentX = 0;
     void Start()
     {
-        ObjectPool = ObjectPool.Instance;
+        objectPool = objectPool.Instance;
     }
-    public void spawn(string pooledObjectId)
+    public void Spawn(string pooledObjectId)
     {
         this.pooledObjectId = pooledObjectId;
-        var go = ObjectPool.GetObject(pooledObjectId);
+        var go = objectPool.GetObject(pooledObjectId);
         if (go != null)
         {
             go.transform.position = new Vector3(currentX,0,0);
@@ -30,14 +30,14 @@ public class SpawnObject : MonoBehaviour
     private IEnumerator ReturnObject(GameObject go)
     {
         yield return new WaitForSeconds(1f);
-       ObjectPool.ReturnObject(pooledObjectId, go);
+       objectPool.ReturnObject(pooledObjectId, go);
         currentX = 0;
     }
     private void OnGUI()
     {
         if(GUILayout.Button("Spawn Object"))
         {
-           spawn(pooledObjectId);
+           Spawn(pooledObjectId);
         }
     }
 }
