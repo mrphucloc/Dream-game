@@ -7,9 +7,9 @@ public class MonoSing<T> : MonoBehaviour
    
     private void Awake()
     {
-        if (instance == null)
+        if (Instance == null)
         {
-            instance = (T)(object)this;
+            Instance = (T)(object)this;
             DontDestroyOnLoad(gameObject);
         }
         else {

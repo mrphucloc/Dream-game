@@ -15,6 +15,8 @@ public class ObjectPool : MonoBehaviour
 
     private Dictionary<string, Queue<GameObject>> objectsPool;
 
+    public ObjectPool Instance { get; internal set; }
+
     public void Start()
     {
         if (objectsPool == null)

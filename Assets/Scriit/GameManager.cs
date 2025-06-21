@@ -17,7 +17,7 @@ namespace managers
                 spawnTimer -= 1f;
                 for (var i = 0; i < SpawnObjectCountInASecond; i++)
                 {
-                    GetInstance().Spawn(pooledObjectId);
+                    //object value = GetInstance().Spawn(pooledObjectId);
                 }
             }
 
