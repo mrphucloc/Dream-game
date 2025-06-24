@@ -17,6 +17,9 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(EventSystem.current != null && EventSystem.current.IsPointerOverGameObject()) 
+            return;
+
         float horizontalInput = Input.GetAxis("Horizontal");
         float verticalInput = Input.GetAxis("Vertical");
         Vector3 moveDirection = new Vector3(horizontalInput, 0f, verticalInput).normalized;
@@ -29,5 +32,9 @@ public class Player : MonoBehaviour
             transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
         }
 
+        if (anim != null)
+        {
+            anim.SetFloat("walk", moveDirection.magnitude);
+        }
     }
 }
