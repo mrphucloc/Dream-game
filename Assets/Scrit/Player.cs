@@ -3,7 +3,7 @@ using UnityEngine.EventSystems;
 
 public class Player : MonoBehaviour
 {
-    [SerializeField] float moveSpeed = 3f;
+    [SerializeField] float moveSpeed = 300f;
     [SerializeField] float rotationSpeed = 360f;
     CharacterController character;
     Animator anim;
@@ -22,7 +22,7 @@ public class Player : MonoBehaviour
 
         float horizontalInput = Input.GetAxis("Horizontal");
         float verticalInput = Input.GetAxis("Vertical");
-        Vector3 moveDirection = new Vector3(horizontalInput, 0f, verticalInput).normalized;
+        Vector3 moveDirection = new Vector3(horizontalInput, 0f, verticalInput);
 
         character.Move(moveDirection * moveSpeed * Time.deltaTime);
 
