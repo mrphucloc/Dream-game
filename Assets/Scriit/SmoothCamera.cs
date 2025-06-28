@@ -7,7 +7,7 @@ namespace DefaultNamespace
 
         private void FixedUpdate()
         {
-            Vector3 desiredPooition = taget.position + Offset;
+         
             
         }
     }
