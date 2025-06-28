@@ -1,16 +1,9 @@
 using UnityEngine;
 
-public class IVertexShape : MonoBehaviour
+namespace GJK
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public interface IVertexShape
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        Vector2 Support(Vector2 direction);
     }
 }

@@ -2,86 +2,89 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace DefaultNamespace;
-public class CarController : MonoBehaviour
+namespace DefaultNamespace
 {
-    public CarController OtherCar;
-
-    public enum WheelType
+    public class CarController : MonoBehaviour
     {
-        FrontLeft,
-        FrontRight,
-        RearLeft,
-        RearRight
-    }
-    [SerializeField]
-  
-    public class Wheel
-    {
-        public WheelCollider WheelCollider;
-        public Transform WheelTransform;
-        public WheelType WheelType;
-        public float MaxSteerAngle;
-        public float MotorTorque;
-    }
-    [SerializeField] private List<Wheel> wheels;
-    [SerializeField] private float maxSpeed = 100f;
-    [SerializeField] private float acceleration = 10f;
-    [SerializeField] private float brakeForce = 50f;
-
-    private float currentSpeed = 0f;
-
-    private void Update()
-    {
-        HandleInput();
-        UpdareWheels();
-    }
-
-    private void UpdareWheels()
-    {
-       
-    }
-
-    private void HandleInput()
-    {
-        float horizontalInput = Input.GetAxis("Horizontal");
-        float verticalInput = Input.GetAxis("Vertical");
-
-        foreach (var wheel in wheels) { 
-            wheel.WheelCollider.steerAngle = horizontalInput * wheel.MaxSteerAngle;
-            float speed = verticalInput* wheel.MotorTorque* Time.deltaTime * acceleration;
-            currentSpeed = currentSpeed + speed;
-            currentSpeed = Mathf.Clamp(currentSpeed, -10f, maxSpeed);
-            wheel.WheelCollider.motorTorque = verticalInput * wheel.MotorTorque;
+        public enum WheelType
+        {
+            FrontLeft,
+            FrontRight,
+            RearLeft,
+            RearRight
         }
-        if (Input.GetKey(KeyCode.Space))
+
+        [Serializable]
+        public struct Wheel
+        {
+            public Transform wheelTransform;
+            public WheelCollider wheelCollider;
+            public WheelType wheelType;
+            public float maxSteerAngle;
+            public float motorTorque;
+        }
+
+        [SerializeField] private List<Wheel> wheels;
+
+        [SerializeField] private float maxSpeed = 100f;
+        [SerializeField] private float acceleration = 10f;
+        [SerializeField] private float brakeForce = 50f;
+
+        private float currentSpeed = 0f;
+
+        private void Update()
+        {
+            HandleInput();
+            UpdateWheels();
+        }
+
+        private void UpdateWheels()
         {
             foreach (var wheel in wheels)
             {
-                wheel.wheelCollider.motorTorque = 0f;
-                wheel.WheelCollider.brakeTorque = brakeForce;
+                // Update wheel rotation
+                float rotationAngle = currentSpeed * Time.deltaTime;
+                wheel.wheelTransform.Rotate(Vector3.right, rotationAngle);
+
+                // Update wheel position
+                Vector3 position;
+                Quaternion rotation;
+                wheel.wheelCollider.GetWorldPose(out position, out rotation);
+                wheel.wheelTransform.position = position;
+                wheel.wheelTransform.rotation = rotation;
             }
         }
-        else
+
+        private void HandleInput()
         {
+            float horizontalInput = Input.GetAxis("Horizontal");
+            float verticalInput = Input.GetAxis("Vertical");
+
+            // Steer front wheels
             foreach (var wheel in wheels)
             {
-                wheel.WheelCollider.brakeTorque = 0f;
+                wheel.wheelCollider.steerAngle = horizontalInput * wheel.maxSteerAngle;
+                float speed = verticalInput * wheel.motorTorque * Time.deltaTime * acceleration;
+                currentSpeed += speed;
+                currentSpeed = Mathf.Clamp(currentSpeed, -10f, maxSpeed);
+                wheel.wheelCollider.motorTorque = currentSpeed;
+            }
+            // Apply brake force
+            if (Input.GetKey(KeyCode.Space))
+            {
+                foreach (var wheel in wheels)
+                {
+                    wheel.wheelCollider.brakeTorque = brakeForce;
+                }
+            }
+            else
+            {
+                foreach (var wheel in wheels)
+                {
+                    wheel.wheelCollider.brakeTorque = 0f;
+                }
             }
         }
     }
-    private void UpdateWheels()
-        {
-        foreach (var wheel in wheels)
-        {
-            float rotationAngle = currentSpeed * Time.deltaTime;
-            wheel.WheelTransform.Rotate(Vector3.right, rotationAngle);
+}
 
-            Vector3 position;
-            Quaternion rotation;
-            wheel.WheelCollider.GetWorldPose(out position, out rotation);
-            wheel.WheelTransform.position = position;
-            wheel.WheelTransform.rotation = rotation;
-        }
-    }
-    }

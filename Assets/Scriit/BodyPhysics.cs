@@ -10,6 +10,7 @@ public class BodyPhysics : MonoBehaviour
     private Vector3 velocity = Vector3.zero;
     private Vector3 force = Vector3.zero;
 
+
     public void AddForce(Vector3 inForce)
     {
         force += inForce;
@@ -22,16 +23,21 @@ public class BodyPhysics : MonoBehaviour
             ApplyGravity();
         }
 
-            ApplyForce();
-        transform.position += velocity * Time.deltaTime; 
+        // Apply forces to the body
+        ApplyForces();
+
+        // Update position based on velocity
+        transform.position += velocity * Time.deltaTime;
     }
-    private void ApplyForce()
+
+    private void ApplyForces()
     {
-        velocity = force * (Time.deltaTime / mass);
+        velocity += force * (Time.deltaTime / mass);
+        force = Vector3.zero;
     }
 
     private void ApplyGravity()
     {
-        velocity += gravity * (Time.deltaTime/ mass);
+        velocity += gravity * (Time.deltaTime / mass);
     }
 }
