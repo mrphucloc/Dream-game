@@ -1,20 +1,24 @@
+using System.Collections.Generic;
 using UnityEngine;
 
-public class MonoSingleton<T> : MonoBehaviour
+namespace Utils
 {
-    public static T Instance { get; private set; }
-
-   
-    private void Awake()
+    public class MonoSingleton<T> : MonoBehaviour
     {
-        if (Instance == null)
+        public static T Instance { get; private set; }
+
+        protected virtual void Awake()
         {
-            Instance = (T)(object)this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else {
-            Debug.LogWarning($"An instance of {typeof(T).Name} already exists. Destroying duplicate.");
-            Destroy(gameObject);
+            if (Instance == null)
+            {
+                Instance = (T)(object)this;
+                DontDestroyOnLoad(gameObject);
+            }
+            else
+            {
+                Debug.LogWarning($"An instance of {typeof(T).Name} already exists. Destroying duplicate.");
+                Destroy(gameObject);
+            }
         }
     }
 }
