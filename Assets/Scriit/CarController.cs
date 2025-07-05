@@ -46,7 +46,7 @@ namespace DefaultNamespace
             {
                 // Update wheel rotation
                 float rotationAngle = currenttSpeed * Time.deltaTime;
-                wheel.wheelTransform.Rotate(Vector3.right, rotationAngle);
+                wheel.wheellTransform.Rotate(Vector3.right, rotationAngle);
 
                 // Update wheel position
                 Vector3 position;
